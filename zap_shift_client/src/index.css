@@ -157,3 +157,10 @@ body{
     transform: translateX(-50%);
   }
 }
+
+.active{
+  background: #CAEB66;
+  padding: 12px 20px;
+  border-radius: 50px;
+  color: #03373D;
+}
