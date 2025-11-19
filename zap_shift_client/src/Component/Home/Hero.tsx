@@ -23,7 +23,7 @@ const Hero = () => {
                             <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4 rounded-full">Track Your Parcel</Button>
                             <Button className="p-2 md:p-3 bg-secondary text-primary rounded-full hover:text-secondary"><MdOutlineArrowOutward size={20} /></Button>
                         </div>
-                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Track Your Parcel</Button>
+                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Be A Rider</Button>
                     </div>
                 </div>
                 <div className="w-full md:w-auto flex justify-center">
@@ -43,7 +43,7 @@ const Hero = () => {
                             <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4 rounded-full">Track Your Parcel</Button>
                             <Button className="p-2 md:p-3 bg-secondary text-primary rounded-full hover:text-secondary"><MdOutlineArrowOutward size={20} /></Button>
                         </div>
-                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Track Your Parcel</Button>
+                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Be A Rider</Button>
                     </div>
                 </div>
                 <div className="w-full md:w-auto flex justify-center">
@@ -63,7 +63,7 @@ const Hero = () => {
                             <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4 rounded-full">Track Your Parcel</Button>
                             <Button className="p-2 md:p-3 bg-secondary text-primary rounded-full hover:text-secondary"><MdOutlineArrowOutward size={20} /></Button>
                         </div>
-                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Track Your Parcel</Button>
+                        <Button className="text-lg md:text-xl font-semibold text-[#1F1F1F] px-6 md:px-8 py-3 md:py-4" variant={"outline"}>Be A Rider</Button>
                     </div>
                 </div>
                 <div className="w-full md:w-auto flex justify-center">
