@@ -25,7 +25,7 @@ const HowItWorks = () => {
     ];
 
     return (
-        <section className="max-w-[1440px] mx-auto py-24">
+        <section className="max-w-[1440px] mx-auto py-24 px-6 2xl:px-0">
             <h2 className="text-secondary text-3xl font-bold mb-8">How it Works</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                 {
