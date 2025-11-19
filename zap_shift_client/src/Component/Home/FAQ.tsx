@@ -34,14 +34,6 @@ const FAQ = () => {
             <h2 className="text-[40px] font-extrabold mb-8 text-center text-secondary">Frequently Asked Question (FAQ)</h2>
             <p className="max-w-[820px] mx-auto text-center">Enhance posture, mobility, and well-being effortlessly with Posture Pro. Achieve proper alignment, reduce pain, and strengthen your body with ease!</p>
 
-            {/* <div>
-                {faqs.map((faq, index) => (
-                    <div key={index} className="py-6">
-                        <h3 className="text-xl font-semibold mb-2 border-b border-gray-300 pb-4">{faq.question}</h3>
-                        <p>{faq.answer}</p>
-                    </div>
-                ))}
-            </div> */}
             <Accordion type="single" collapsible className="w-full space-y-4 mt-10" defaultValue="item-1">
                 {
                     faqs.map((faq, index) => (<AccordionItem key={index} value={`item-${index+1}`} className="bg-white data-[state=open]:bg-[#E6F2F3] rounded-2xl px-6 py-2">

@@ -83,7 +83,7 @@ const BandsSlider = () => {
                         parcelFeatures.map((feature, i) => (<div key={i} className="bg-white p-8 rounded-2xl flex items-center justify-between md:gap-10 xl:gap-20">
                             <img className="hidden md:block" src={feature?.img} alt={feature?.title} />
                             <svg className="hidden md:block" width="1" height="150" viewBox="0 0 1 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0.5" y1="150" x2="0.5" stroke="#03464D" stroke-dasharray="5 5" />
+                                <line x1="0.5" y1="150" x2="0.5" stroke="#03464D" strokeDasharray="5 5" />
                             </svg>
 
                             <div>

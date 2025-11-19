@@ -9,7 +9,7 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 
 const Hero = () => {
     return (
-        <Carousel autoPlay={true} infiniteLoop={true} interval={3000} className="bg-linear-to-r from-white via-[#f0fad8] to-primary">
+        <Carousel autoPlay={true} infiniteLoop={true} interval={3000} showThumbs={false} className="bg-linear-to-r from-white via-[#f0fad8] to-primary">
             <div className="flex flex-col md:flex-row items-center justify-between max-w-[1440px] mx-auto py-10 md:py-20 px-4">
                 <div className="max-w-[640px] text-center md:text-left mb-8 md:mb-0">
                     <div className="max-w-[150px] md:max-w-[210px] max-h-[100px] mx-auto md:mx-0">
