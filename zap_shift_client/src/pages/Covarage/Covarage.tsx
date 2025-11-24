@@ -2,17 +2,16 @@ import { MapContainer } from 'react-leaflet/MapContainer'
 import 'leaflet/dist/leaflet.css';
 import { Marker, Popup, TileLayer } from 'react-leaflet';
 import { useLoaderData } from 'react-router';
-import { Button } from '@/components/ui/button';
 import { useRef } from 'react';
 import { Map as LeafletMap } from 'leaflet';
 
-type CoverageArea = {
+export type CoverageArea = {
     region: string;
     district: string;
     city: string;
     covered_area: string[];
-    status: "active" | "inactive"; // if only these values are allowed
-    flowchart: string; // URL string
+    status: "active" | "inactive";
+    flowchart: string;
     longitude: number;
     latitude: number;
 };
