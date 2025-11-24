@@ -1,5 +1,6 @@
 import Root from "@/Layouts/Root";
 import BeARider from "@/pages/BeARider/BeARider";
+import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
 import Home from "@/pages/Home/Home";
 import { createBrowserRouter } from "react-router";
@@ -21,6 +22,11 @@ export const router = createBrowserRouter([
             {
                 path: "/be-a-rider",
                 element: <BeARider />,
+                loader: () => fetch('/data/warehouses.json').then(res => res.json())
+            },
+            {
+                path: "/pricing",
+                element: <CalculatePricing />,
                 loader: () => fetch('/data/warehouses.json').then(res => res.json())
             }
         ]

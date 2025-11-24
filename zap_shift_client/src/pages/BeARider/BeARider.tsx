@@ -6,6 +6,7 @@ import type { CoverageArea } from "../Covarage/Covarage";
 import { Controller, useForm, useWatch } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
 import image from "../../assets/agent-pending.png"
+import Header from "@/Component/Shared/Header/Header";
 
 const BeARider = () => {
     const areas: CoverageArea[] = useLoaderData()
@@ -27,9 +28,7 @@ const BeARider = () => {
     return (
         <section className="max-w-[1440px] mx-auto px-24 py-20 bg-white rounded-2xl my-8 flex flex-col lg:flex-row gap-12 items-center">
             <div>
-                <h2 className="text-6xl font-extrabold">Be a Rider</h2>
-                <p className="mt-4">Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.</p>
-                <div className="border border-dashed border-gray-300 my-12"></div>
+                <Header title="Be a Rider" description="Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time." />
                 <h3 className="text-3xl font-extrabold mb-6">Tell us about yourself</h3>
 
                 <form onSubmit={handleSubmit(handleBeARider)}>
