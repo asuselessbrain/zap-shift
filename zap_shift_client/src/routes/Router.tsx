@@ -1,14 +1,18 @@
+import AuthLayout from "@/Layouts/AuthLayout";
 import Root from "@/Layouts/Root";
+import About from "@/pages/About/About";
 import BeARider from "@/pages/BeARider/BeARider";
 import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
 import Home from "@/pages/Home/Home";
+import NotFound from "@/pages/NotFound/NotFound";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
+         
         children: [
             {
                 index: true,
@@ -28,7 +32,19 @@ export const router = createBrowserRouter([
                 path: "/pricing",
                 element: <CalculatePricing />,
                 loader: () => fetch('/data/warehouses.json').then(res => res.json())
+            },
+            {
+                path: "/about",
+                element: <About />
             }
         ]
+    },
+    {
+        path: "/login",
+        element: <AuthLayout />
+    },
+    {
+        path: "*",
+        element: <NotFound />
     }
 ])

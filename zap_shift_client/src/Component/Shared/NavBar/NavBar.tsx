@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../Logo/Logo";
 import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
@@ -36,13 +36,16 @@ export default function Navbar() {
 
                 {/* Buttons (Desktop only) */}
                 <div className="hidden lg:flex items-center gap-4">
-                    <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100">
-                        Sign In
-                    </button>
-
-                    <button className="px-5 py-2 bg-[#c8ea4e] rounded-md text-gray-900 font-medium hover:bg-[#b5dd3c] transition">
-                        Be a rider
-                    </button>
+                    <Link to="/login">
+                        <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100">
+                            Sign In
+                        </button>
+                    </Link>
+                    <Link to="/be-a-rider">
+                        <button className="px-5 py-2 cursor-pointer bg-[#c8ea4e] rounded-md text-gray-900 font-medium hover:bg-[#b5dd3c] transition">
+                            Be a rider
+                        </button>
+                    </Link>
                 </div>
 
                 {/* Mobile menu button */}
@@ -75,13 +78,17 @@ export default function Navbar() {
 
                 {/* Mobile Buttons */}
                 <div className="flex flex-col mt-4 gap-3 px-6">
-                    <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
-                        Sign In
-                    </button>
+                    <Link to="/login">
+                        <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                            Sign In
+                        </button>
+                    </Link>
 
-                    <Button className="px-5 py-2 rounded-md text-secondary font-medium">
-                        Be a rider
-                    </Button>
+                    <Link to="/be-a-rider">
+                        <Button className="px-5 py-2 rounded-md text-secondary font-medium">
+                            Be a rider
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </nav>

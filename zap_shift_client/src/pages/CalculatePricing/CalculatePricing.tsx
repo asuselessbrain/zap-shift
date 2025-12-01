@@ -3,57 +3,21 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLoaderData } from "react-router";
 import type { CoverageArea } from "../Covarage/Covarage";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { priceCalculator } from "@/utils/priceCalculator";
 
 const CalculatePricing = () => {
     const { control, handleSubmit, register, reset } = useForm()
     const [price, setPrice] = useState(0)
     const areaData: CoverageArea[] = useLoaderData()
-    const regionsWithDuplicate = areaData.map((area: CoverageArea) => area.region)
-    const regions = [...new Set(regionsWithDuplicate)]
-
-    const region = useWatch({ control, name: "yourRegion" })
-    const deliveryRegion = useWatch({ control, name: "deliveryRegion" })
-
-    const districts = areaData.filter((area: CoverageArea) => area.region.toLowerCase() === region).map((areaData: CoverageArea) => areaData.district)
-    const deliveryDistricts = areaData.filter((area: CoverageArea) => area.region.toLowerCase() === deliveryRegion).map((areaData: CoverageArea) => areaData.district)
+    const districtsWithDuplicate = areaData.map((area: CoverageArea) => area.district)
+    const districts = [...new Set(districtsWithDuplicate)]
 
     const handleCalculatePricing = (data) => {
-        if (data.type === "document" && data.yourDistrict === data.deliveryDistrict) {
-            data.price = 60
-            setPrice(data.price)
-            return
-        }
-        if (data.type === "document" && data.yourDistrict !== data.deliveryDistrict) {
-            data.price = 80
-            setPrice(data.price)
-            return
-        }
-
-        if (data.type === "non-document" && data.weight <= 3) {
-            if (data.yourDistrict === data.deliveryDistrict) {
-                data.price = 110
-                setPrice(data.price)
-            } else {
-                data.price = 150
-                setPrice(data.price)
-            }
-            return
-        }
-
-        if (data.type === "non-document" && data.weight > 3) {
-            if (data.yourDistrict === data.deliveryDistrict) {
-                data.price = 110 + 40 * (Math.ceil(data.weight) - 3)
-                setPrice(data.price)
-            } else {
-                data.price = 110 + 40 * (Math.ceil(data.weight) - 3) + 40
-                setPrice(data.price)
-            }
-            return
-        }
+        priceCalculator(data, setPrice)
     }
 
     const resetForm = () => {
@@ -95,35 +59,6 @@ const CalculatePricing = () => {
                         </Controller>
                     </div>
                     <div className="grid w-full gap-3">
-                        <Label htmlFor="yourRegion">Your Region</Label>
-                        <Controller
-                            name="yourRegion"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => {
-                                return (
-                                    <Select onValueChange={field.onChange} value={field.value || ""} >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select a region" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectLabel>Regions</SelectLabel>
-                                                {
-                                                    regions.map((region: string, i: number) => (
-                                                        <SelectItem key={i} value={region.toLowerCase()}>{region}</SelectItem>
-                                                    ))
-                                                }
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                )
-                            }}
-                        >
-
-                        </Controller>
-                    </div>
-                    <div className="grid w-full gap-3">
                         <Label htmlFor="yourDistrict">Your District</Label>
                         <Controller
                             name="yourDistrict"
@@ -135,41 +70,12 @@ const CalculatePricing = () => {
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a district" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="max-h-96 overflow-y-auto">
                                             <SelectGroup>
                                                 <SelectLabel>Districts</SelectLabel>
                                                 {
                                                     districts.map((district: string, i: number) => (
                                                         <SelectItem key={i} value={district.toLowerCase()}>{district}</SelectItem>
-                                                    ))
-                                                }
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                )
-                            }}
-                        >
-
-                        </Controller>
-                    </div>
-                    <div className="grid w-full gap-3">
-                        <Label htmlFor="deliveryRegion">Delivery Region</Label>
-                        <Controller
-                            name="deliveryRegion"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => {
-                                return (
-                                    <Select onValueChange={field.onChange} value={field.value || ""} >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select a region" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectLabel>Regions</SelectLabel>
-                                                {
-                                                    regions.map((region: string, i: number) => (
-                                                        <SelectItem key={i} value={region.toLowerCase()}>{region}</SelectItem>
                                                     ))
                                                 }
                                             </SelectGroup>
@@ -193,11 +99,11 @@ const CalculatePricing = () => {
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a district" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="max-h-96 overflow-y-auto">
                                             <SelectGroup>
                                                 <SelectLabel>Districts</SelectLabel>
                                                 {
-                                                    deliveryDistricts.map((district: string, i: number) => (
+                                                    districts.map((district: string, i: number) => (
                                                         <SelectItem key={i} value={district.toLowerCase()}>{district}</SelectItem>
                                                     ))
                                                 }
