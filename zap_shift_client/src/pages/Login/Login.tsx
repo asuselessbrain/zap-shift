@@ -18,7 +18,7 @@ const Login = () => {
                 </div>
                 <p className="my-4 text-[#71717A] text-sm">Forget Password?</p>
                 <input type="submit" value="Login" className="bg-primary w-full py-3 rounded-md my-4 font-semibold" />
-                <p className="text-[#71717A] my-4 text-sm">Don’t have any account? <Link to="/register" className="text-[#8FA748]">Register</Link></p>
+                <p className="text-[#71717A] my-4 text-sm">Don’t have any account? <Link to="/auth/register" className="text-[#8FA748]">Register</Link></p>
                 <p className="my-6 flex items-center justify-center">OR</p>
                 <Button variant="outline" className="w-full py-3 rounded-md font-semibold bg-[#E9ECF1] cursor-pointer">
                     <FcGoogle size={24} />

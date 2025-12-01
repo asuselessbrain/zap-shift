@@ -7,6 +7,7 @@ import Covarage from "@/pages/Covarage/Covarage";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import NotFound from "@/pages/NotFound/NotFound";
+import Register from "@/pages/Register/Register";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
             {
                 path: "login",
                 element: <Login />
+            },
+            {
+                path: "register",
+                element: <Register />
             }
         ]
     },
