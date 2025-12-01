@@ -36,7 +36,7 @@ export default function Navbar() {
 
                 {/* Buttons (Desktop only) */}
                 <div className="hidden lg:flex items-center gap-4">
-                    <Link to="/login">
+                    <Link to="/auth/login">
                         <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100">
                             Sign In
                         </button>
@@ -78,7 +78,7 @@ export default function Navbar() {
 
                 {/* Mobile Buttons */}
                 <div className="flex flex-col mt-4 gap-3 px-6">
-                    <Link to="/login">
+                    <Link to="/auth/login">
                         <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
                             Sign In
                         </button>

@@ -5,6 +5,7 @@ import BeARider from "@/pages/BeARider/BeARider";
 import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
 import Home from "@/pages/Home/Home";
+import Login from "@/pages/Login/Login";
 import NotFound from "@/pages/NotFound/NotFound";
 import { createBrowserRouter } from "react-router";
 
@@ -40,8 +41,14 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/login",
-        element: <AuthLayout />
+        path: "/auth",
+        element: <AuthLayout />,
+        children: [
+            {
+                path: "login",
+                element: <Login />
+            }
+        ]
     },
     {
         path: "*",
