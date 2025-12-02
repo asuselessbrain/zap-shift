@@ -8,6 +8,7 @@ import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import NotFound from "@/pages/NotFound/NotFound";
 import Register from "@/pages/Register/Register";
+import SendParcel from "@/pages/SendParcel/SendParcel";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -33,6 +34,11 @@ export const router = createBrowserRouter([
             {
                 path: "/pricing",
                 element: <CalculatePricing />,
+                loader: () => fetch('/data/warehouses.json').then(res => res.json())
+            },
+            {
+                path: "/send-parcel",
+                element: <SendParcel />,
                 loader: () => fetch('/data/warehouses.json').then(res => res.json())
             },
             {

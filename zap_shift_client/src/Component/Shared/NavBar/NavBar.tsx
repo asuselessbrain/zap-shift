@@ -9,7 +9,7 @@ export default function Navbar() {
 
     const navItems = [
         { link: "/", name: "Home" },
-        { link: "/services", name: "Services" },
+        { link: "/send-parcel", name: "Send Parcel" },
         { link: "/coverage", name: "Coverage" },
         { link: "/about", name: "About Us" },
         { link: "/pricing", name: "Pricing" },
