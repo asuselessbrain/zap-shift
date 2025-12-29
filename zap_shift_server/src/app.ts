@@ -1,0 +1,19 @@
+import express from 'express';
+import cors from 'cors';
+import { ParcelRouter } from './app/modules/parcel/parcel.route';
+
+const app = express();
+
+app.use(cors({credentials: true, origin: true}));
+app.use(express.json());
+
+app.use('/api/v1/parcels', ParcelRouter);
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the Zap Shift Server!'
+
+  })
+});
+
+export default app;
