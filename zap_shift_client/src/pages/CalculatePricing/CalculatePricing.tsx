@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLoaderData } from "react-router";
 import type { CoverageArea } from "../Covarage/Covarage";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -16,8 +16,9 @@ const CalculatePricing = () => {
     const districtsWithDuplicate = areaData.map((area: CoverageArea) => area.district)
     const districts = [...new Set(districtsWithDuplicate)]
 
-    const handleCalculatePricing = (data) => {
-        priceCalculator(data, setPrice)
+    const handleCalculatePricing = (data: FieldValues) => {
+        const calculatedPrice = priceCalculator(data);
+        setPrice(calculatedPrice as number);
     }
 
     const resetForm = () => {
@@ -33,9 +34,9 @@ const CalculatePricing = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-12">
                 <form className="space-y-4 w-full" onSubmit={handleSubmit(handleCalculatePricing)}>
                     <div className="grid w-full gap-3">
-                        <Label htmlFor="type">Parcel Type</Label>
+                        <Label htmlFor="parcelType">Parcel Type</Label>
                         <Controller
-                            name="type"
+                            name="parcelType"
                             control={control}
                             rules={{ required: true }}
                             render={({ field }) => {
@@ -61,7 +62,7 @@ const CalculatePricing = () => {
                     <div className="grid w-full gap-3">
                         <Label htmlFor="yourDistrict">Your District</Label>
                         <Controller
-                            name="yourDistrict"
+                            name="senderDistrict"
                             control={control}
                             rules={{ required: true }}
                             render={({ field }) => {

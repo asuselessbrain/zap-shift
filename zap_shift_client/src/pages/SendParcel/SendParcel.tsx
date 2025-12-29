@@ -12,13 +12,15 @@ import { useMutation } from '@tanstack/react-query';
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
+import { priceCalculator } from "@/utils/priceCalculator";
 
 export type ParcelType = "document" | "non-document";
 
 export interface Parcel {
     parcelType: ParcelType;
     parcelName: string;
-    weight?: number;
+    weight: number;
+    cost: number;
 
     // Sender Info
     senderName: string;
@@ -74,7 +76,14 @@ const SendParcel = () => {
     })
 
     const handleSendParcel = async (data: FieldValues) => {
-        mutate(data as Parcel);
+        
+        const calculatedPrice = priceCalculator(data);
+        const parcelData = {
+            ...data,
+            cost: calculatedPrice,
+        }
+
+        mutate(parcelData as Parcel);
     }
 
     return (
@@ -118,7 +127,7 @@ const SendParcel = () => {
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="weight">Weight (KG)</Label>
-                            <Input {...register("weight", { required: true })} type="text" id="weight" placeholder="Weight in KG" />
+                            <Input {...register("weight", { required: true })} type="number" id="weight" placeholder="Weight in KG" />
                             {
                                 errors.weight?.type === "required" ? <span className="text-red-500">This field is required</span> : null
                             }
@@ -322,7 +331,7 @@ const SendParcel = () => {
                     </div>
                     {
                         isPending ? <Button disabled className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold disabled:cursor-no-drop">Loading...</Button>
-                        : <input type="submit" value="Proceed to Confirm Booking" className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold" />
+                            : <input type="submit" value="Proceed to Confirm Booking" className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold" />
                     }
                 </form>
             </div>

@@ -1,9 +1,11 @@
 import AuthLayout from "@/Layouts/AuthLayout";
+import DashboardLayout from "@/Layouts/DashboardLayout";
 import Root from "@/Layouts/Root";
 import About from "@/pages/About/About";
 import BeARider from "@/pages/BeARider/BeARider";
 import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
+import AdminHome from "@/pages/Dashboard/Admin/AdminHome";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import NotFound from "@/pages/NotFound/NotFound";
@@ -15,7 +17,7 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
-         
+
         children: [
             {
                 index: true,
@@ -58,6 +60,16 @@ export const router = createBrowserRouter([
             {
                 path: "register",
                 element: <Register />
+            }
+        ]
+    },
+    {
+        path: "/dashboard",
+        element: <DashboardLayout />,
+        children: [
+            {
+                index: true,
+                element: <AdminHome />
             }
         ]
     },

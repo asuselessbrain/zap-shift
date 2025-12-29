@@ -1,34 +1,25 @@
-export const priceCalculator = (data, setPrice: React.Dispatch<React.SetStateAction<number>>) => {
-    if (data.type === "document" && data.yourDistrict === data.deliveryDistrict) {
-        data.price = 60
-        setPrice(data.price)
-        return
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const priceCalculator = (data:any) => {
+    if (data.parcelType === "document" && data.senderDistrict === data.receiverDistrict) {
+        return 60
     }
-    if (data.type === "document" && data.yourDistrict !== data.deliveryDistrict) {
-        data.price = 80
-        setPrice(data.price)
-        return
+    if (data.parcelType === "document" && data.senderDistrict !== data.receiverDistrict) {
+        return 80
     }
 
-    if (data.type === "non-document" && data.weight <= 3) {
-        if (data.yourDistrict === data.deliveryDistrict) {
-            data.price = 110
-            setPrice(data.price)
+    if (data.parcelType === "non-document" && data.weight <= 3) {
+        if (data.senderDistrict === data.receiverDistrict) {
+            return 110
         } else {
-            data.price = 150
-            setPrice(data.price)
+            return 150
         }
-        return
     }
 
-    if (data.type === "non-document" && data.weight > 3) {
-        if (data.yourDistrict === data.deliveryDistrict) {
-            data.price = 110 + 40 * (Math.ceil(data.weight) - 3)
-            setPrice(data.price)
+    if (data.parcelType === "non-document" && data.weight > 3) {
+        if (data.senderDistrict === data.receiverDistrict) {
+            return 110 + 40 * (Math.ceil(data.weight) - 3)
         } else {
-            data.price = 110 + 40 * (Math.ceil(data.weight) - 3) + 40
-            setPrice(data.price)
+            return 110 + 40 * (Math.ceil(data.weight) - 3) + 40
         }
-        return
     }
 }
