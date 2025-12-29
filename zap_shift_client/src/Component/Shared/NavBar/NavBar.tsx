@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../Logo/Logo";
 import { Button } from "@/components/ui/button";
 import { Link, NavLink } from "react-router";
+import { AuthContext } from "@/Context/Providers/AuthContext";
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
+    const authContext = use(AuthContext);
+
+    if (!authContext) {
+        return null;
+    }
+
+    const { user, logOut } = authContext;
+
+    const handleLogout = async () => {
+        try {
+            await logOut();
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    }
 
     const navItems = [
         { link: "/", name: "Home" },
@@ -36,11 +52,17 @@ export default function Navbar() {
 
                 {/* Buttons (Desktop only) */}
                 <div className="hidden lg:flex items-center gap-4">
-                    <Link to="/auth/login">
-                        <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100">
-                            Sign In
-                        </button>
-                    </Link>
+                    {
+                        user ?
+                            <button onClick={handleLogout} className="px-5 py-2 border border-gray-300 rounded-md bg-red-400 text-white font-medium">
+                                Sign Out
+                            </button>
+                            : <Link to="/auth/login">
+                                <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                                    Sign In
+                                </button>
+                            </Link>
+                    }
                     <Link to="/be-a-rider">
                         <button className="px-5 py-2 cursor-pointer bg-[#c8ea4e] rounded-md text-gray-900 font-medium hover:bg-[#b5dd3c] transition">
                             Be a rider
@@ -78,6 +100,17 @@ export default function Navbar() {
 
                 {/* Mobile Buttons */}
                 <div className="flex flex-col mt-4 gap-3 px-6">
+                    {
+                        user ?
+                            <button onClick={handleLogout} className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                                Sign Out
+                            </button>
+                            : <Link to="/auth/login">
+                                <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                                    Sign In
+                                </button>
+                            </Link>
+                    }
                     <Link to="/auth/login">
                         <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
                             Sign In
