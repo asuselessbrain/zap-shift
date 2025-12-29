@@ -14,6 +14,18 @@ const createParcel = catchAsync(async(req: Request, res: Response)=>{
     });
 })
 
+const getAllParcels = catchAsync(async(req: Request, res: Response)=>{
+    const query = req.query;
+    const parcels = await ParcelService.getAllParcels(query);
+
+    res.status(200).json({
+        success: true,
+        message: "Parcels retrieved successfully",
+        data: parcels,
+    });
+});
+
 export const ParcelController = {
     createParcel,
+    getAllParcels,
 };

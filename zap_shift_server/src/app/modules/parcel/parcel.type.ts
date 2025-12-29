@@ -1,11 +1,9 @@
-export type ParcelType = "document" | "non-document";
-
 export interface Parcel {
-  parcelType: ParcelType;
+  parcelType: "document" | "non-document";
   parcelName: string;
-  weight?: number;
+  weight: number;
+  cost: number;
 
-  // Sender Info
   senderName: string;
   senderEmail: string;
   senderRegion: string;
@@ -13,17 +11,10 @@ export interface Parcel {
   senderPhoneNumber: string;
   pickupInstruction: string;
 
-  // Receiver Info
   receiverName: string;
   receiverEmail: string;
   receiverRegion: string;
   receiverDistrict: string;
   receiverPhoneNumber: string;
   deliveryInstruction: string;
-
-  // System Generated (optional, future use)
-//   status?: ParcelStatus;
-//   cost?: number;
-//   trackingNo?: string;
-//   createdAt?: string;
 }

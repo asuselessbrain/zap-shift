@@ -18,16 +18,13 @@ const ParcelSchema = new Schema(
     weight: {
       type: Number,
       min: [0.1, "Weight must be greater than 0"],
-      validate: {
-        validator: function (this: any, value: number) {
-          // weight required only for non-document
-          if (this.parcelType === "non-document") {
-            return value !== undefined;
-          }
-          return true;
-        },
-        message: "Weight is required for non-document parcels",
-      },
+      required: [true, "Weight is required"],
+    },
+
+    cost: {
+      type: Number,
+      min: [0, "Cost cannot be negative"],
+      required: [true, "Cost is required"],
     },
 
     // Sender Info
