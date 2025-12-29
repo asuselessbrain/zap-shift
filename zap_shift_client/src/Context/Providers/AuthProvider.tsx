@@ -1,6 +1,6 @@
 import { AuthContext } from "@/Context/Providers/AuthContext";
 import { useEffect, useState, type ReactNode } from "react";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { auth } from "@/firebase/Firebase.init";
 import { type User } from "firebase/auth";
 
@@ -20,8 +20,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         return await signOut(auth);
     }
 
+    const signUpUser = async (email: string, password: string) => {
+        return await createUserWithEmailAndPassword(auth, email, password);
+    }
+
+    const updateUserProfile = async (profileInfo: { displayName?: string; photoURL?: string }) => {
+        return await updateProfile(auth.currentUser as User, profileInfo);
+    }
+
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(currentUser=>{
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setLoading(false);
         })
@@ -29,6 +37,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     const authInfo = {
+        signUpUser,
+        updateUserProfile,
         loginWithGoogle,
         user,
         loading,

@@ -1,5 +1,9 @@
 import type { User, UserCredential } from "firebase/auth";
 import { createContext } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AuthContext = createContext<{ user: User | null; loginWithGoogle: () => Promise<UserCredential>, logOut: () => Promise<void>, loading: boolean } | null>(null)
+export const AuthContext = createContext<{
+    user: User | null; loginWithGoogle: () => Promise<UserCredential>, updateUserProfile: (profileInfo: {
+        displayName?: string | undefined;
+        photoURL?: string | undefined;
+    }) => Promise<void>, logOut: () => Promise<void>, signUpUser: (email: string, password: string) => Promise<UserCredential>, loading: boolean
+} | null>(null)
