@@ -5,12 +5,48 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch, type FieldValues } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import type { CoverageArea } from "../Covarage/Covarage";
+import { useMutation } from '@tanstack/react-query';
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+
+export type ParcelType = "document" | "non-document";
+
+export interface Parcel {
+    parcelType: ParcelType;
+    parcelName: string;
+    weight?: number;
+
+    // Sender Info
+    senderName: string;
+    senderEmail: string;
+    senderRegion: string;
+    senderDistrict: string;
+    senderPhoneNumber: string;
+    pickupInstruction: string;
+
+    // Receiver Info
+    receiverName: string;
+    receiverEmail: string;
+    receiverRegion: string;
+    receiverDistrict: string;
+    receiverPhoneNumber: string;
+    deliveryInstruction: string;
+
+    // System Generated (optional, future use)
+    //   status?: ParcelStatus;
+    //   cost?: number;
+    //   trackingNo?: string;
+    //   createdAt?: string;
+}
+
 
 const SendParcel = () => {
-    const { handleSubmit, register, control, formState: { errors } } = useForm()
+    const { handleSubmit, register, control, formState: { errors } } = useForm();
+    const axiosSecure = useAxiosSecure();
 
     const regions: CoverageArea[] = useLoaderData();
 
@@ -24,10 +60,23 @@ const SendParcel = () => {
     const senderDistricts = regions.filter((area) => area.region.toLowerCase() === senderRegions)?.map((area) => area.district);
 
 
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (parcelData: Parcel) => {
+            const response = await axiosSecure.post('/parcels', parcelData);
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success("Parcel created successfully");
+        },
+        onError: () => {
+            toast.error("Failed to create parcel. Please try again.");
+        }
+    })
 
-    const handleSendParcel = (data) => {
-        console.log(data);
+    const handleSendParcel = async (data: FieldValues) => {
+        mutate(data as Parcel);
     }
+
     return (
         <section className="max-w-[1440px] mx-auto px-24 py-20 bg-white rounded-2xl my-8">
             <div>
@@ -271,7 +320,10 @@ const SendParcel = () => {
                             </div>
                         </div>
                     </div>
-                    <input type="submit" value="Proceed to Confirm Booking" className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold" />
+                    {
+                        isPending ? <Button disabled className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold disabled:cursor-no-drop">Loading...</Button>
+                        : <input type="submit" value="Proceed to Confirm Booking" className="text-secondary bg-primary rounded-lg mt-8 py-3 cursor-pointer px-12 font-semibold" />
+                    }
                 </form>
             </div>
         </section>
