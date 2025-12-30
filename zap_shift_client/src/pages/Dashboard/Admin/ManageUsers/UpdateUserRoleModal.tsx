@@ -4,13 +4,26 @@ import { Label } from '@/components/ui/label';
 import type { IUser } from './ManageUsers';
 import { Controller, useForm, type FieldValues } from 'react-hook-form';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useMutation } from '@tanstack/react-query';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
-const UpdateUserRoleModal = ({ user }: { user: IUser }) => {
+const UpdateUserRoleModal = ({ user, refetch }: { user: IUser, refetch: () => void }) => {
 
     const { control, handleSubmit } = useForm();
+    const axiosSecure = useAxiosSecure()
+
+    const {mutate, isPending } = useMutation({
+        mutationFn: async(data: FieldValues) => await axiosSecure.patch(`/users/role/${user?.email}`, data),
+        onSuccess: ()=> {
+            toast.success("User role updated successfully");
+            refetch();
+        },
+        onError: ()=>toast.error("Failed to update user role")
+    })
 
     const handleUpdateRole = (data: FieldValues) => {
-        console.log(data)
+        mutate(data);
     }
 
     return (
@@ -76,7 +89,7 @@ const UpdateUserRoleModal = ({ user }: { user: IUser }) => {
                         <Button variant="outline">Cancel</Button>
                     </DialogClose>
                     <DialogClose asChild>
-                        <Button type="submit">Save changes</Button>
+                        <Button type="submit" disabled={isPending} className='disabled:cursor-no-drop cursor-pointer'>Save changes</Button>
                     </DialogClose>
                 </DialogFooter>
             </form>

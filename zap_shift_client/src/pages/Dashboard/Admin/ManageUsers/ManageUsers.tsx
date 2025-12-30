@@ -41,7 +41,7 @@ const ManageUsers = () => {
         setSortOrder(data.sortOrder || "");
     }
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ['users', searchTerm, role, sortOrder, page],
         queryFn: async () => {
             const res = await axiosSecure(`/users?searchTerm=${searchTerm}&role=${role}&sortBy=createdAt&sortOrder=${sortOrder}&limit=${limit}&skip=${page}`)
@@ -177,7 +177,7 @@ const ManageUsers = () => {
                                             <DialogTrigger asChild>
                                                 <Button variant="outline" className="hover:bg-secondary hover:text-white transition-all duration-500">< FiEdit /> Edit Role</Button>
                                             </DialogTrigger>
-                                            <UpdateUserRoleModal user={user} />
+                                            <UpdateUserRoleModal user={user} refetch={refetch} />
                                         </Dialog>
                                         <Button className="border-none bg-red-500 hover:bg-red-700 text-white transition-all duration-500">Suspend</Button>
                                     </td>

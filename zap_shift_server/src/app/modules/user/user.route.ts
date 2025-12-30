@@ -6,5 +6,6 @@ const router = express.Router();
 router.post("/", UserController.createUser)
 router.get("/role/:email", UserController.getRole)
 router.get("/", UserController.getAllUsers)
+router.patch("/role/:email", UserController.updateUserRole)
 
 export const userRoutes = router;

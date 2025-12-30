@@ -67,8 +67,14 @@ const getAllUsers = async (query: Record<string, unknown>): Promise<{
     };
 }
 
+const updateUserRole = async (email: string, role: string): Promise<IUser | null> => {
+    const updatedUser = await User.findOneAndUpdate({ email }, { role }, { new: true }).select("-password");
+    return updatedUser;
+}
+
 export const UserService = {
     createUser,
     getRole,
-    getAllUsers
+    getAllUsers,
+    updateUserRole
 }
