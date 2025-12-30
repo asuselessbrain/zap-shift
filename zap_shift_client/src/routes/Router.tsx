@@ -6,6 +6,7 @@ import BeARider from "@/pages/BeARider/BeARider";
 import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
 import AdminHome from "@/pages/Dashboard/Admin/AdminHome";
+import ManageUsers from "@/pages/Dashboard/Admin/ManageUsers";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import NotFound from "@/pages/NotFound/NotFound";
@@ -64,12 +65,16 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/dashboard",
+        path: "/admin",
         element: <DashboardLayout />,
         children: [
             {
-                index: true,
+                path: "dashboard",
                 element: <AdminHome />
+            },
+            {
+                path: "manage-users",
+                element: <ManageUsers />
             }
         ]
     },

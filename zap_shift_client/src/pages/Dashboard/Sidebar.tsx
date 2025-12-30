@@ -16,17 +16,12 @@ const Sidebar = () => {
         return <div>Loading...</div>
     }
 
-    console.log(role)
-
-
-
-
     if (!auth) return null;
 
     const { user } = auth;
 
     const adminRoutesLinks = [
-        { name: "Dashboard", path: "/sidebar", icon: <FiHome size={24} /> },
+        { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome size={24} /> },
         { name: "Manage Users", path: "/admin/manage-users", icon: <FiUsers size={24} /> },
         { name: "Manage Riders", path: "/admin/manage-riders", icon: <FiTruck size={24} /> },
         { name: "Delivery Management", path: "/admin/manage-delivery", icon: <BsBoxSeam size={24} /> },
@@ -58,10 +53,10 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="flex md:hidden items-center justify-between px-6 pt-6">
+            <div className="flex lg:hidden items-center justify-between px-6 pt-6">
                 <Logo />
                 <button
-                    className="md:hidden sticky top-4 left-4 z-50 text-white p-2 bg-primary rounded-md"
+                    className="lg:hidden sticky top-4 left-4 z-50 text-white p-2 bg-primary rounded-md"
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <FiMenu size={28} />
@@ -71,9 +66,9 @@ const Sidebar = () => {
             <div
                 className={`
                     fixed top-0 left-0 h-full bg-secondary text-white p-6 
-                    z-40 w-64 transform transition-transform duration-300 
+                    z-40 w-96 transform transition-transform duration-300 
                     ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-                    md:translate-x-0 md:sticky md:flex md:flex-col md:justify-between md:min-h-screen overflow-y-auto
+                    lg:translate-x-0 lg:sticky lg:flex lg:flex-col lg:justify-between lg:min-h-screen overflow-y-auto
                 `}
             >
                 <div>

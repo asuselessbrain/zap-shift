@@ -53,8 +53,6 @@ const getAllUsers = async (query: Record<string, unknown>): Promise<{
     const limit = Number(query.limit) || 10;
 
     const skip = (Number(query.skip) - 1) * Number(query.limit || limit) || 0;
-    console.log((Number(query.skip) - 1) * Number(query.limit || limit))
-    console.log(skip)
 
     const users = await User.find(filter).sort(sort).skip(skip).limit(limit).select("-password");
 
