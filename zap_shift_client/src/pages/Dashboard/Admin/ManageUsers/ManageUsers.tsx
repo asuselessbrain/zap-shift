@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { FiEdit, FiUsers } from "react-icons/fi";
+import UpdateUserRoleModal from "./UpdateUserRoleModal";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export type UserRole = "admin" | "user" | "rider";
 
@@ -171,7 +173,12 @@ const ManageUsers = () => {
                                         {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}
                                     </td>
                                     <td className="px-6 py-4 gap-4 flex">
-                                        <Button variant="outline" className="border border-secondary hover:bg-secondary hover:text-white transition-all duration-500">< FiEdit /> Edit Role</Button>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" className="hover:bg-secondary hover:text-white transition-all duration-500">< FiEdit /> Edit Role</Button>
+                                            </DialogTrigger>
+                                            <UpdateUserRoleModal user={user} />
+                                        </Dialog>
                                         <Button className="border-none bg-red-500 hover:bg-red-700 text-white transition-all duration-500">Suspend</Button>
                                     </td>
                                 </tr>))
@@ -213,8 +220,6 @@ const ManageUsers = () => {
                         Page {page} of {totalPages}
                     </span>
                 </div>
-
-
             </div>
 
         </div>
