@@ -29,7 +29,7 @@ export default function Navbar() {
         { link: "/coverage", name: "Coverage" },
         { link: "/about", name: "About Us" },
         { link: "/pricing", name: "Pricing" },
-        { link: "/be-a-rider", name: "Be a Rider" },
+        { link: "/admin/dashboard", name: "Dashboard" },
     ]
 
     return (
