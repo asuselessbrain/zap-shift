@@ -72,9 +72,30 @@ const updateUserRole = async (email: string, role: string): Promise<IUser | null
     return updatedUser;
 }
 
+const getRiders = async (query: Record<string, unknown>): Promise<IUser[]> => {
+    const filter: Record<string, unknown> = { role: "rider" };
+
+    if (query.city) {
+        filter.city = query.city;
+    }
+
+    if (query.searchTerm) {
+        filter.$or = [
+            { displayName: { $regex: query.searchTerm, $options: "i" } },
+            { email: { $regex: query.searchTerm, $options: "i" } },
+            { address: { $regex: query.searchTerm, $options: "i" } },
+            { city: { $regex: query.searchTerm, $options: "i" } },
+        ]
+    }
+
+    const riders = await User.find(filter).select("-password");
+    return riders;
+}
+
 export const UserService = {
     createUser,
     getRole,
     getAllUsers,
-    updateUserRole
+    updateUserRole,
+    getRiders,
 }

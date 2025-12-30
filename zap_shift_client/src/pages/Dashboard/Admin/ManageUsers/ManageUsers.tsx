@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Controller, useForm, type FieldValues } from "react-hook-form";
 import NoUserFound from "./NoUserFound";
 import UserTable from "./UserTable";
+import AdminDashboardHeader from "../AdminDashboardHeader";
 
 export type UserRole = "admin" | "user" | "rider";
 
@@ -68,8 +69,7 @@ const ManageUsers = () => {
 
     return (
         <div className="text-secondary">
-            <h2 className="uppercase text-3xl">Manage Users</h2>
-            <p className="mt-2 mb-8 text-[#4A5565]">View and manage all platform users</p>
+            <AdminDashboardHeader heading="Manage Users" subHeading="View and manage all platform users" />
             <form onChange={handleSubmit(handleSearching)} className="flex flex-col md:flex-row  items-center gap-6 bg-white px-6 py-4 rounded-lg shadow-md mb-8 border border-[#F3F4F6]">
                 <Input type="text" id="searchTerm" placeholder="Search by email, name, address, city...." {...register("searchTerm")} className="w-full " />
                 <Controller

@@ -49,9 +49,22 @@ const updateUserRole = catchAsync(async(req:Request, res:Response)=>{
     });
 });
 
+const getRiders = catchAsync(async(req:Request, res:Response)=>{
+    const query = req.query;
+
+    const result = await UserService.getRiders(query as Record<string, unknown>);
+
+    res.status(200).json({
+        success: true,
+        message: "Riders retrieved successfully",
+        data: result,
+    });
+});
+
 export const UserController = {
     createUser,
     getRole,
     getAllUsers,
-    updateUserRole
+    updateUserRole,
+    getRiders,
 };

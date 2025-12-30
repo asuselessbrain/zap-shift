@@ -3,15 +3,23 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLoaderData } from "react-router";
 import type { CoverageArea } from "../Covarage/Covarage";
-import { Controller, useForm, useWatch } from "react-hook-form"
+import { Controller, useForm, useWatch, type FieldValues } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
 import image from "../../assets/agent-pending.png"
 import Header from "@/Component/Shared/Header/Header";
+import useAuth from "@/hooks/useAuth";
+import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 const BeARider = () => {
     const areas: CoverageArea[] = useLoaderData()
+    const axiosSecure = useAxiosSecure()
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm()
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm()
+
+    const auth = useAuth()
 
     const regionsWithDuplicate = areas.map(area => area.region)
     const regionsWithOutDuplicate = Array.from(new Set(regionsWithDuplicate))
@@ -20,8 +28,15 @@ const BeARider = () => {
 
     const districts = areas.filter(area => area.region.toLowerCase() === watchRegion).map(area => area.district)
 
-    const handleBeARider = (data) => {
-        console.log(data)
+    const {mutate, isPending} = useMutation({
+        mutationFn: async(data: FieldValues) => axiosSecure.post('/riders', data),
+        onSuccess: ()=> toast.success("Rider application submitted successfully"),
+        onError: ()=> toast.error("Failed to submit rider application")
+    })
+
+    const handleBeARider = (data: FieldValues) => {
+        mutate(data)
+        reset()
     }
 
 
@@ -35,7 +50,7 @@ const BeARider = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-6">
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="name">Your Name</Label>
-                            <Input {...register("name", { required: true, minLength: 3, maxLength: 50 })} type="text" id="name" placeholder="Your Name" />
+                            <Input {...register("name", { required: true, minLength: 3, maxLength: 50 })} type="text" id="name" placeholder="Your Name" defaultValue={auth?.user?.displayName as string} />
                             {
                                 errors.name?.type === "required" ? <span className="text-red-500">This field is required</span> :
                                     errors.name?.type === "minLength" ? <span className="text-red-500">Name must be at least 3 characters</span> :
@@ -53,7 +68,7 @@ const BeARider = () => {
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="email">Your Email</Label>
-                            <Input {...register("email", { required: true, pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ })} type="email" id="email" placeholder="Your Email" />
+                            <Input {...register("email", { required: true, pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ })} type="email" id="email" placeholder="Your Email" defaultValue={auth?.user?.email as string} disabled />
                             {
                                 errors.email?.type === "required" ? <span className="text-red-500">This field is required</span> :
                                     errors.email?.type === "pattern" ? <span className="text-red-500">Invalid email address</span> : null
@@ -74,7 +89,7 @@ const BeARider = () => {
                             <Controller
                                 name="region"
                                 control={control}
-                                rules={{required: true}}
+                                rules={{ required: true }}
                                 render={({ field }) => {
                                     return (<Select onValueChange={field.onChange} value={field.value || ""}>
                                         <SelectTrigger className="w-full">
@@ -103,7 +118,7 @@ const BeARider = () => {
                             <Controller
                                 name="district"
                                 control={control}
-                                rules={{required: true}}
+                                rules={{ required: true }}
                                 render={({ field }) => {
                                     return (<Select onValueChange={field.onChange} value={field.value || ""}>
                                         <SelectTrigger className="w-full">
@@ -130,44 +145,46 @@ const BeARider = () => {
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="nid">NID Number</Label>
-                            <Input {...register("nid", {required: true})} type="text" id="nid" placeholder="NID Number" />
+                            <Input {...register("nid", { required: true })} type="text" id="nid" placeholder="NID Number" />
                             {
                                 errors.nid?.type === "required" ? <span className="text-red-500">This field is required</span> : null
                             }
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="contact">Contact</Label>
-                            <Input {...register("contact", {required: true, maxLength: 11, minLength: 11, pattern: /^01[3-9]\d{8}$/ })} type="text" id="contact" placeholder="01XXXXXXXXX" />
+                            <Input {...register("contact", { required: true, maxLength: 11, minLength: 11, pattern: /^01[3-9]\d{8}$/ })} type="text" id="contact" placeholder="01XXXXXXXXX" />
                             {
                                 errors.contact?.type === "required" ? <span className="text-red-500">This field is required</span> :
                                     errors.contact?.type === "minLength" ? <span className="text-red-500">Contact must be 11 characters</span> :
-                                        errors.contact?.type === "maxLength" ? <span className="text-red-500">Contact must be 11 characters</span> : 
+                                        errors.contact?.type === "maxLength" ? <span className="text-red-500">Contact must be 11 characters</span> :
                                             errors.contact?.type === "pattern" ? <span className="text-red-500">Invalid contact number format (e.g., 01XXXXXXXXX)</span> : null
                             }
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="bikeBrandModel">Bike Brand and Model</Label>
-                            <Input {...register("bikeBrandModel", {required: true})} type="text" id="bikeBrandModel" placeholder="Bike Brand and Model" />
+                            <Input {...register("bikeBrandModel", { required: true })} type="text" id="bikeBrandModel" placeholder="Bike Brand and Model" />
                             {
                                 errors.bikeBrandModel?.type === "required" ? <span className="text-red-500">This field is required</span> : null
                             }
                         </div>
                         <div className="grid w-full items-center gap-3">
                             <Label htmlFor="bikeRegistrationNumber">Bike Registration Number</Label>
-                            <Input {...register("bikeRegistrationNumber", {required: true})} type="text" id="bikeRegistrationNumber" placeholder="Bike Registration Number" />
+                            <Input {...register("bikeRegistrationNumber", { required: true })} type="text" id="bikeRegistrationNumber" placeholder="Bike Registration Number" />
                             {
                                 errors.bikeRegistrationNumber?.type === "required" ? <span className="text-red-500">This field is required</span> : null
                             }
                         </div>
                         <div className="grid w-full items-center gap-3 col-span-1 lg:col-span-2">
                             <Label htmlFor="aboutBikerYourSelf">Tell us about yourself</Label>
-                            <Textarea {...register("aboutBikerYourSelf", {required: true})} id="aboutBikerYourSelf" placeholder="Tell us about yourself" />
+                            <Textarea {...register("aboutBikerYourSelf", { required: true })} id="aboutBikerYourSelf" placeholder="Tell us about yourself" />
                             {
                                 errors.aboutBikerYourSelf?.type === "required" ? <span className="text-red-500">This field is required</span> : null
                             }
                         </div>
                     </div>
-                    <input type="submit" value="Submit" className="text-secondary bg-primary w-full rounded-lg mt-8 py-2" />
+                    {
+                        isPending ? <Button disabled className="text-secondary cursor-no-drop bg-primary w-full rounded-lg mt-8 py-2">Loading...</Button> : <input type="submit" disabled={isPending} value="Submit" className="text-secondary cursor-pointer disabled:cursor-no-drop bg-primary w-full rounded-lg mt-8 py-2" />
+                    }
                 </form>
             </div>
             <img src={image} alt="Agent Pending" />

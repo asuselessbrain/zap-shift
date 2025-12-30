@@ -81,7 +81,7 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             <div
-                className={`lg:hidden bg-white w-full shadow-sm transition-all duration-300 overflow-hidden ${open ? "max-h-[450px] py-4" : "max-h-0"
+                className={`lg:hidden bg-white w-full shadow-sm transition-all duration-300 overflow-hidden ${open ? "py-4" : "max-h-0"
                     }`}
             >
                 <ul className="flex flex-col gap-4 text-gray-700 font-medium px-6">
@@ -102,23 +102,18 @@ export default function Navbar() {
                 <div className="flex flex-col mt-4 gap-3 px-6">
                     {
                         user ?
-                            <button onClick={handleLogout} className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                            <button onClick={handleLogout} className="px-5 bg-red-500 hover:bg-red-600 text-white py-2 border border-gray-300 rounded-md font-medium">
                                 Sign Out
                             </button>
                             : <Link to="/auth/login">
-                                <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
+                                <button className="px-5 py-2 border w-full border-gray-300 rounded-md text-gray-700 font-medium">
                                     Sign In
                                 </button>
                             </Link>
                     }
-                    <Link to="/auth/login">
-                        <button className="px-5 py-2 border border-gray-300 rounded-md text-gray-700 font-medium">
-                            Sign In
-                        </button>
-                    </Link>
 
-                    <Link to="/be-a-rider">
-                        <Button className="px-5 py-2 rounded-md text-secondary font-medium">
+                    <Link to="/be-a-rider" onClick={() => setOpen(false)}>
+                        <Button className="px-5 py-2 w-full rounded-md text-secondary font-medium">
                             Be a rider
                         </Button>
                     </Link>
