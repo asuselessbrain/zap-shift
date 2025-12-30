@@ -12,6 +12,17 @@ const createRider = catchAsync(async(req:Request, res:Response)=>{
     });
 })
 
+const getAllRiders = catchAsync(async(req:Request, res:Response)=>{
+    const query = req.query;
+    const result = await RiderService.getAllRiders(query as Record<string, any>);
+    res.status(200).json({
+        success: true,
+        message: "Riders retrieved successfully",
+        data: result,
+    });
+});
+
 export const RiderController = {
     createRider,
+    getAllRiders,
 };
