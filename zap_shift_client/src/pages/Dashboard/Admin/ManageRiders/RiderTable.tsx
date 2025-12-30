@@ -3,8 +3,29 @@ import { FiCheckCircle, FiEdit, FiEye, FiUsers, FiXCircle } from 'react-icons/fi
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Data, IUser } from '../ManageUsers/ManageUsers';
+import { useMutation } from '@tanstack/react-query';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: { refetch: () => void, data: Data, page: number, setPage: Dispatch<SetStateAction<number>>, pageNumbers: number[], totalPages: number }) => {
+
+    const axiosSecure = useAxiosSecure();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async ({ riderId, status }: { riderId: string, status: 'approved' | 'rejected' }) => {
+            const res = await axiosSecure.patch(`/riders/${riderId}/status`, { status });
+            return res.data;
+        },
+        onSuccess: () => {
+            refetch();
+            toast.success("Rider status updated successfully");
+        },
+        onError: () => toast.error("Failed to update rider status")
+    })
+
+    const handleChangeStatus = (riderId: string, status: 'approved' | 'rejected') => {
+        mutate({ riderId, status });
+    }
     return (
         <div className="bg-white px-6 py-4 rounded-lg mb-8 shadow-md border border-[#F3F4F6]">
             <div className="flex items-center justify-between">
@@ -86,8 +107,9 @@ const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: {
                                         </DialogTrigger>
                                     </Dialog>
                                     {
-                                        user.status === "pending" && (<><Button className="border-none"><FiCheckCircle />Approve</Button>
-                                            <Button className="border-none bg-red-500 hover:bg-red-700 text-white transition-all duration-500"><FiXCircle /> Reject</Button></>)
+                                        user.status === "pending" && (<>
+                                            <Button disabled={isPending} className="border-none cursor-pointer disabled:cursor-no-drop" onClick={() => handleChangeStatus(user._id, "approved")}><FiCheckCircle />Approve</Button>
+                                            <Button disabled={isPending} className="border-none bg-red-500 hover:bg-red-700 text-white transition-all duration-500 cursor-pointer disabled:cursor-no-drop" onClick={() => handleChangeStatus(user._id, "rejected")}><FiXCircle /> Reject</Button></>)
                                     }
 
                                 </td>

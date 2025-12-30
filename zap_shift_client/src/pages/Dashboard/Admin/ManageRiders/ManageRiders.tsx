@@ -38,6 +38,14 @@ const ManageRiders = () => {
         }
     })
 
+    const {data: dashboardData} = useQuery({
+        queryKey: ['rider-dashboard-data'],
+        queryFn: async () => {
+            const res = await axiosSecure.get('/riders/dashboard-data');
+            return res.data.data;
+        }
+    })
+
     const handleSearching = (data: FieldValues) => {
         setPage(1);
         setSearchTerm(data.search || "");
@@ -66,7 +74,7 @@ const ManageRiders = () => {
                 <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
                     <div>
                         <p>Approved Riders</p>
-                        <h5 className="text-3xl text-black">2</h5>
+                        <h5 className="text-3xl text-black">{dashboardData?.acceptedRiders}</h5>
                     </div>
                     <div className="bg-[#DCFCE7] rounded-xl text-[#00A63E] p-4">
                         <FiCheckCircle size={24} />
@@ -74,8 +82,8 @@ const ManageRiders = () => {
                 </div>
                 <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
                     <div>
-                        <p>Approved Riders</p>
-                        <h5 className="text-3xl text-black">2</h5>
+                        <p>Pending Approval</p>
+                        <h5 className="text-3xl text-black">{dashboardData?.pendingRiders}</h5>
                     </div>
                     <div className="bg-[#FEF9C2] rounded-xl text-[#D08700] p-4">
                         <FiTruck size={24} />
@@ -83,8 +91,8 @@ const ManageRiders = () => {
                 </div>
                 <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
                     <div>
-                        <p>Approved Riders</p>
-                        <h5 className="text-3xl text-black">2</h5>
+                        <p>Rejected</p>
+                        <h5 className="text-3xl text-black">{dashboardData?.rejectedRiders}</h5>
                     </div>
                     <div className="bg-[#FFE2E2] rounded-xl text-[#E7000B] p-4">
                         <FiXCircle size={24} />

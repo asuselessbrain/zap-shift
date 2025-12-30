@@ -67,7 +67,31 @@ const getAllRiders = async (query: Record<string, any>): Promise<{ meta: { total
     }
 };
 
+const riderRelatedDashboardData = async (): Promise<{ acceptedRiders: number, pendingRiders: number, rejectedRiders: number }> => {
+    const acceptedRiders = await RiderModel.countDocuments({ status: 'approved' });
+    const pendingRiders = await RiderModel.countDocuments({ status: 'pending' });
+    const rejectedRiders = await RiderModel.countDocuments({ status: 'rejected' });
+
+    return {
+        acceptedRiders,
+        pendingRiders,
+        rejectedRiders
+    }
+}
+
+const changeRiderStatus = async (riderId: string, status: 'approved' | 'rejected'): Promise<IRider | null> => {
+    const rider = await RiderModel.findById(riderId);
+    if (!rider) {
+        throw new Error("Rider not found");
+    }
+    rider.status = status;
+    await rider.save();
+    return rider;
+}
+
 export const RiderService = {
     createRider,
     getAllRiders,
+    riderRelatedDashboardData,
+    changeRiderStatus
 };
