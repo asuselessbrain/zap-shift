@@ -13,6 +13,19 @@ const createUser = catchAsync(async(req:Request, res:Response)=>{
     });
 })
 
+const getRole = catchAsync(async(req:Request, res:Response)=>{
+    const email = req.params.email;
+
+    const result = await UserService.getRole(email as string);
+
+    res.status(200).json({
+        success: true,
+        message: "User role retrieved successfully",
+        data: result,
+    });
+})
+
 export const UserController = {
     createUser,
+    getRole,
 };

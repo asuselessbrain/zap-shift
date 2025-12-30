@@ -2,18 +2,28 @@ import { useState } from "react";
 import Logo from "@/Component/Shared/Logo/Logo";
 import useAuth from "@/hooks/useAuth";
 import { NavLink } from "react-router";
-import { FiHome, FiUsers, FiTruck, FiBarChart, FiLogOut, FiMenu } from 'react-icons/fi';
+import { FiHome, FiUsers, FiTruck, FiBarChart, FiLogOut, FiMenu, FiBox, FiDollarSign, FiSettings, FiPlus, FiCreditCard, FiClock } from 'react-icons/fi';
 import { IoLocationOutline } from "react-icons/io5";
 import { BsBoxSeam } from "react-icons/bs";
+import useRole from "@/hooks/useRole";
 
 const Sidebar = () => {
     const auth = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const {role, isLoading} = useRole(auth?.user?.email as string);
+
+    if(isLoading){
+        return <div>Loading...</div>
+    }
+
+    console.log(role)
+
+
+
 
     if (!auth) return null;
 
     const { user } = auth;
-    const role = "admin";
 
     const adminRoutesLinks = [
         { name: "Dashboard", path: "/sidebar", icon: <FiHome size={24} /> },
@@ -21,6 +31,24 @@ const Sidebar = () => {
         { name: "Manage Riders", path: "/admin/manage-riders", icon: <FiTruck size={24} /> },
         { name: "Delivery Management", path: "/admin/manage-delivery", icon: <BsBoxSeam size={24} /> },
         { name: "Analytics", path: "/admin/analytics", icon: <FiBarChart size={24} /> },
+    ];
+
+    const riderRoutesLinks = [
+        {name: "Dashboard", path: "/rider/dashboard", icon: <FiHome size={24} /> },
+        { name: "Parcel to PickUp", path: "/rider/parcel-to-pickup", icon: <FiBox size={24} /> },
+        { name: "Parcel to Deliver", path: "/rider/parcel-to-deliver", icon: <FiTruck size={24} /> },
+        {name: "Earnings", path: "/rider/earnings", icon: <FiDollarSign size={24} /> },
+        {name: "Settings", path: "/rider/settings", icon: <FiSettings size={24} /> },
+    ];
+
+    const userRoutesLinks = [
+        { name: "Dashboard", path: "/user/dashboard", icon: <FiHome size={24} /> },
+        {name: "Add Parcel", path: "/send-parcel", icon: <FiPlus size={24} /> },
+        {name: "Parcel to Pay", path: "/user/parcel-to-pay", icon: <FiCreditCard size={24} /> },
+        {name: "Manage Parcels", path: "/user/manage-parcels", icon: <FiBox size={24} /> },
+        {name: "Payment History", path: "/user/payment-history", icon: <FiClock size={24} /> },
+        {name: "Settings", path: "/user/settings", icon: <FiSettings size={24} /> },
+
     ];
 
     const commonRoutesLinks = [
@@ -57,12 +85,46 @@ const Sidebar = () => {
                             <p className="text-white/60">{user?.email}</p>
                         </div>
                     </div>
-                    <p className="bg-primary py-2 px-4 rounded-full text-secondary text-sm font-semibold inline-block uppercase">Admin</p>
+                    <p className="bg-primary py-2 px-4 rounded-full text-secondary text-sm font-semibold inline-block uppercase">{role}</p>
                     <div className="border-t border-gray-600 my-6"></div>
 
                     {role === "admin" && (
                         <ul>
                             {adminRoutesLinks.map((link, index) => (
+                                <li key={index} className="font-semibold">
+                                    <NavLink
+                                        to={link.path}
+                                        className={({ isActive }) =>
+                                            `flex items-center gap-2 p-4 ${isActive ? "bg-primary rounded-xl text-secondary" : "text-white/80"}`
+                                        }
+                                    >
+                                        {link.icon} {link.name}
+                                    </NavLink>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {role === "rider" && (
+                        <ul>
+                            {riderRoutesLinks.map((link, index) => (
+                                <li key={index} className="font-semibold">
+                                    <NavLink
+                                        to={link.path}
+                                        className={({ isActive }) =>
+                                            `flex items-center gap-2 p-4 ${isActive ? "bg-primary rounded-xl text-secondary" : "text-white/80"}`
+                                        }
+                                    >
+                                        {link.icon} {link.name}
+                                    </NavLink>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {role === "user" && (
+                        <ul>
+                            {userRoutesLinks.map((link, index) => (
                                 <li key={index} className="font-semibold">
                                     <NavLink
                                         to={link.path}
