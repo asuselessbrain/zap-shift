@@ -25,7 +25,20 @@ const getRole = catchAsync(async(req:Request, res:Response)=>{
     });
 })
 
+const getAllUsers = catchAsync(async(req:Request, res:Response)=>{
+    const query = req.query;
+
+    const result = await UserService.getAllUsers(query as Record<string, unknown>);
+
+    res.status(200).json({
+        success: true,
+        message: "Users retrieved successfully",
+        data: result,
+    });
+})
+
 export const UserController = {
     createUser,
     getRole,
+    getAllUsers
 };

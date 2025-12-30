@@ -45,12 +45,20 @@ const getAllParcels = async (query: Record<string, any>) => {
         sortOption[String(query.sortBy)] = query.sortOrder === "asc" ? 1 : -1;
     }
 
-    const skip = (Number(query.skip) - 1) * Number(query.limit) || 0;
     const limit = Number(query.limit) || 10;
+    const skip = (Number(query.skip) - 1) * Number(query.limit || limit) || 0;
 
 
     const parcels = await ParcelModel.find(filter).sort(sortOption).skip(skip).limit(limit);
-    return parcels;
+    const total = await ParcelModel.countDocuments(filter);
+    return {
+        meta: {
+            total,
+            page: (Number(skip) / Number(limit)) + 1,
+            limit,
+        },
+        data: parcels
+    };
 }
 
 export const ParcelService = {
