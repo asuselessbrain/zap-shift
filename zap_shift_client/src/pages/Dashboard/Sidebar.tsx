@@ -8,7 +8,7 @@ import { BsBoxSeam } from "react-icons/bs";
 
 const Sidebar = () => {
     const auth = useAuth();
-    const [isOpen, setIsOpen] = useState(false); // toggle state
+    const [isOpen, setIsOpen] = useState(false);
 
     if (!auth) return null;
 
@@ -51,7 +51,7 @@ const Sidebar = () => {
                 <div>
                     <Logo />
                     <div className="flex items-center gap-3 py-6">
-                        <img src={user?.photoURL as string} alt={user?.displayName as string} className="w-16 h-16 rounded-full" />
+                        <img src={user?.photoURL as string} alt={user?.displayName as string} className="w-12 h-12 rounded-full" />
                         <div>
                             <h2>{user?.displayName}</h2>
                             <p className="text-white/60">{user?.email}</p>

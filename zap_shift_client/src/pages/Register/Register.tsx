@@ -6,17 +6,36 @@ import GoogleLogin from "@/Component/Shared/GoogleLogin/GoogleLogin";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [preview, setPreview] = useState<string | null>(null);
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure()
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: async (data: FieldValues) => axiosSecure.post('/users', data),
+        onSuccess: () => {
+            navigate("/");
+            toast.success("User registered successfully");
+        },
+        onError: async() => {
+            await logOut()
+            toast.error("Sign up failed. Please try again.");
+        },
+
+    })
+
     const authContext = useAuth();
     if (!authContext) {
         return null;
     }
 
-    const { signUpUser, updateUserProfile, loading, user } = authContext;
+    const { signUpUser, updateUserProfile, loading, user, logOut } = authContext;
+
+
 
     const handleSignUpUser = async (data: FieldValues) => {
         if (data.password !== data.confirmPassword) {
@@ -73,8 +92,12 @@ const Register = () => {
             const result = await signUpUser(data.email, data.password);
             if (result.user) {
                 await updateUserProfile(updateInfo);
-                navigate("/");
-                toast.success("User registered successfully");
+                mutate({
+                    displayName: data.name,
+                    email: data.email,
+                    photoURL,
+                    password: data.password,
+                });
             }
         } catch (error) {
             console.error("Sign up failed:", error);
@@ -133,7 +156,7 @@ const Register = () => {
                     }
                 </div>
                 {
-                    loading ? <Button disabled className="bg-primary disabled:cursor-no-drop w-full py-3 rounded-md my-4 font-semibold">Loading...</Button> : <input disabled={loading || !!user} type="submit" value="Register" className="bg-primary cursor-pointer disabled:cursor-no-drop w-full py-3 rounded-md my-4 font-semibold" />
+                    loading || isPending ? <Button disabled className="bg-primary disabled:cursor-no-drop w-full py-3 rounded-md my-4 font-semibold">Loading...</Button> : <input disabled={loading || !!user || isPending} type="submit" value="Register" className="bg-primary cursor-pointer disabled:cursor-no-drop w-full py-3 rounded-md my-4 font-semibold" />
                 }
                 <p className="text-[#71717A] my-4 text-sm">Don’t have any account? <Link to="/auth/login" className="text-[#8FA748]">Login</Link></p>
                 <p className="my-6 flex items-center justify-center">OR</p>

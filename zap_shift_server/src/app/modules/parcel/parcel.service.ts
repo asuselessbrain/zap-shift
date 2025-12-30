@@ -6,7 +6,7 @@ const createParcel = async (parcelData: Parcel) => {
     return result;
 }
 
-const getAllParcels = async (query) => {
+const getAllParcels = async (query: Record<string, any>) => {
     console.log(query.parcelType)
 
     const filter: any = {};
