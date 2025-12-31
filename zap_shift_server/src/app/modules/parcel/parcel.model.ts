@@ -1,7 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 const ParcelSchema = new Schema(
   {
+    riderId: {
+      type: Types.ObjectId,
+      ref: "RiderModel",
+      default: null,
+    },
     parcelType: {
       type: String,
       enum: ["document", "non-document"],
@@ -99,6 +104,24 @@ const ParcelSchema = new Schema(
       type: String,
       trim: true,
       maxlength: [300, "Delivery instruction too long"],
+    },
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "ready-for-rider-assignment",
+        "rider-assigned",
+        "in-transit",
+        "delivered",
+        "cancelled",
+      ],
+      default: "pending",
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["paid", "unpaid"],
+      default: "unpaid",
     },
   },
   {

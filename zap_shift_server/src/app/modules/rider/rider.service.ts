@@ -84,6 +84,10 @@ const changeRiderStatus = async (riderId: string, status: 'approved' | 'rejected
     if (!rider) {
         throw new Error("Rider not found");
     }
+
+    if(status === 'approved'){
+        await User.updateOne({ email: rider.email }, { role: 'rider' });
+    }
     rider.status = status;
     await rider.save();
     return rider;

@@ -17,4 +17,8 @@ export interface Parcel {
   receiverDistrict: string;
   receiverPhoneNumber: string;
   deliveryInstruction: string;
+
+  status: "pending" | "ready-for-rider-assignment" | "rider-assigned" | "in-transit" | "delivered" | "cancelled";
+  paymentStatus: "paid" | "unpaid";
+  riderId?: string;
 }

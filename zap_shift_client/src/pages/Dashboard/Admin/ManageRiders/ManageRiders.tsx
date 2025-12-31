@@ -10,7 +10,7 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useState } from "react";
 import RiderTable from "./RiderTable";
 import NoRiderFound from "./NoRiderFound";
-import DashboardInformationCard from "../../Shared/DashboardInformationCard";
+import DashboardCardFormate from "../../Shared/DashboardCardFormate";
 
 const ManageRiders = () => {
     const { register, handleSubmit, control } = useForm()
@@ -40,7 +40,7 @@ const ManageRiders = () => {
         }
     })
 
-    const { data: dashboardData } = useQuery({
+    const { data: dashboardData, isPending: isDashboardPending } = useQuery({
         queryKey: ['rider-dashboard-data'],
         queryFn: async () => {
             const res = await axiosSecure.get('/riders/dashboard-data');
@@ -78,11 +78,12 @@ const ManageRiders = () => {
     return (
         <div className="text-secondary">
             <AdminDashboardHeader heading="Manage Riders" subHeading="Approve, reject, and manage delivery riders" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {
-                    dashboardCardData.map((card, index) => (<DashboardInformationCard key={index} dashboardData={card} />))
-                }
-            </div>
+            {
+                isDashboardPending ?
+                    <div>Loading...</div> :
+                    <DashboardCardFormate dashboardCardData={dashboardCardData} />
+            }
+
 
             <form onChange={handleSubmit(handleSearching)} className="px-6 py-4 rounded-xl bg-white border border-[#F3F4F6] shadow-md my-6 flex flex-col md:flex-row items-center gap-4">
                 <Input type="text" {...register("search")} placeholder="Search riders by name, email, city..." className="w-full" />

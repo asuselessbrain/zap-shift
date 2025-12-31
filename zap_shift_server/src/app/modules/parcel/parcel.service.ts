@@ -2,6 +2,8 @@ import { ParcelModel } from "./parcel.model";
 import { Parcel } from "./parcel.type";
 
 const createParcel = async (parcelData: Parcel) => {
+    parcelData.status = "pending";
+    parcelData.paymentStatus = "unpaid";
     const result = await ParcelModel.create(parcelData);
     return result;
 }
@@ -25,6 +27,11 @@ const getAllParcels = async (query: Record<string, any>) => {
 
     if (query.status) {
         filter.status = query.status;
+    }
+
+    if(query.paymentStatus){
+        console.log(query.paymentStatus)
+        filter.paymentStatus = query.paymentStatus;
     }
 
     if (query.searchTerm) {
