@@ -6,6 +6,7 @@ import BeARider from "@/pages/BeARider/BeARider";
 import CalculatePricing from "@/pages/CalculatePricing/CalculatePricing";
 import Covarage from "@/pages/Covarage/Covarage";
 import AdminHome from "@/pages/Dashboard/Admin/AdminHome";
+import ManageParcel from "@/pages/Dashboard/Admin/ManageParcel/ManageParcel";
 import ManageRiders from "@/pages/Dashboard/Admin/ManageRiders/ManageRiders";
 import ManageUsers from "@/pages/Dashboard/Admin/ManageUsers/ManageUsers";
 import Home from "@/pages/Home/Home";
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
                 path: "manage-riders",
                 element: <ManageRiders />,
                 loader: () => fetch('/data/warehouses.json').then(res => res.json())
+            },
+            {
+                path: "manage-delivery",
+                element: <ManageParcel />
             }
         ]
     },

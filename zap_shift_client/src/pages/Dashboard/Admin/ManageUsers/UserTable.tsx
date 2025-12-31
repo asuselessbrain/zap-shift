@@ -4,7 +4,7 @@ import { FiEdit, FiUsers } from 'react-icons/fi';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import UpdateUserRoleModal from './UpdateUserRoleModal';
 import type { Dispatch, SetStateAction } from 'react';
-import Pagination from '../../Pagination';
+import Pagination from '../../Shared/Pagination';
 
 const UserTable = ({refetch, data, page, setPage, pageNumbers, totalPages}: {refetch: () => void, data: Data, page: number, setPage: Dispatch<SetStateAction<number>>, pageNumbers: number[], totalPages: number}) => {
     return (

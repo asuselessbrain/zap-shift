@@ -10,6 +10,7 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useState } from "react";
 import RiderTable from "./RiderTable";
 import NoRiderFound from "./NoRiderFound";
+import DashboardInformationCard from "../../Shared/DashboardInformationCard";
 
 const ManageRiders = () => {
     const { register, handleSubmit, control } = useForm()
@@ -39,7 +40,7 @@ const ManageRiders = () => {
         }
     })
 
-    const {data: dashboardData} = useQuery({
+    const { data: dashboardData } = useQuery({
         queryKey: ['rider-dashboard-data'],
         queryFn: async () => {
             const res = await axiosSecure.get('/riders/dashboard-data');
@@ -68,37 +69,19 @@ const ManageRiders = () => {
     const totalPages = data ? Math.ceil(data.meta.total / limit) : 1;
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
+    const dashboardCardData = [
+        { title: "Approved Riders", count: dashboardData?.acceptedRiders, icon: <FiCheckCircle size={24} />, bgColor: "bg-[#DCFCE7]", textColor: "text-[#00A63E]" },
+        { title: "Pending Approval", count: dashboardData?.pendingRiders, icon: <FiTruck size={24} />, bgColor: "bg-[#FEF9C2]", textColor: "text-[#D08700]" },
+        { title: "Rejected", count: dashboardData?.rejectedRiders, icon: <FiXCircle size={24} />, bgColor: "bg-[#FFE2E2]", textColor: "text-[#E7000B]" },
+    ]
+
     return (
         <div className="text-secondary">
             <AdminDashboardHeader heading="Manage Riders" subHeading="Approve, reject, and manage delivery riders" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
-                    <div>
-                        <p>Approved Riders</p>
-                        <h5 className="text-3xl text-black">{dashboardData?.acceptedRiders}</h5>
-                    </div>
-                    <div className="bg-[#DCFCE7] rounded-xl text-[#00A63E] p-4">
-                        <FiCheckCircle size={24} />
-                    </div>
-                </div>
-                <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
-                    <div>
-                        <p>Pending Approval</p>
-                        <h5 className="text-3xl text-black">{dashboardData?.pendingRiders}</h5>
-                    </div>
-                    <div className="bg-[#FEF9C2] rounded-xl text-[#D08700] p-4">
-                        <FiTruck size={24} />
-                    </div>
-                </div>
-                <div className="flex items-center justify-between bg-white p-6 rounded-xl border border-[#F3F4F6] shadow-md">
-                    <div>
-                        <p>Rejected</p>
-                        <h5 className="text-3xl text-black">{dashboardData?.rejectedRiders}</h5>
-                    </div>
-                    <div className="bg-[#FFE2E2] rounded-xl text-[#E7000B] p-4">
-                        <FiXCircle size={24} />
-                    </div>
-                </div>
+                {
+                    dashboardCardData.map((card, index) => (<DashboardInformationCard key={index} dashboardData={card} />))
+                }
             </div>
 
             <form onChange={handleSubmit(handleSearching)} className="px-6 py-4 rounded-xl bg-white border border-[#F3F4F6] shadow-md my-6 flex flex-col md:flex-row items-center gap-4">

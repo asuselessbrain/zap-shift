@@ -5,7 +5,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
-import Pagination from '../../Pagination';
+import Pagination from '../../Shared/Pagination';
 
 export interface IRider {
     _id: string;
