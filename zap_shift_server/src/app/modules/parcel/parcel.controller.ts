@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../../utils/catchAsync";
 import { ParcelService } from "./parcel.service";
 
-const createParcel = catchAsync(async(req: Request, res: Response)=>{
+const createParcel = catchAsync(async (req: Request, res: Response) => {
     const parcelData = req.body;
 
     const result = await ParcelService.createParcel(parcelData)
@@ -14,7 +14,7 @@ const createParcel = catchAsync(async(req: Request, res: Response)=>{
     });
 })
 
-const getAllParcels = catchAsync(async(req: Request, res: Response)=>{
+const getAllParcels = catchAsync(async (req: Request, res: Response) => {
     const query = req.query;
     const parcels = await ParcelService.getAllParcels(query);
 
@@ -25,7 +25,17 @@ const getAllParcels = catchAsync(async(req: Request, res: Response)=>{
     });
 });
 
+const getManageParcelPageCardData = catchAsync(async (req: Request, res: Response) => {
+    const data = await ParcelService.getManageParcelPageCardData();
+    res.status(200).json({
+        success: true,
+        message: "Manage parcel page card data retrieved successfully",
+        data: data,
+    });
+});
+
 export const ParcelController = {
     createParcel,
     getAllParcels,
+    getManageParcelPageCardData
 };

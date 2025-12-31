@@ -21,12 +21,6 @@ const ManageParcel = () => {
     const [page, setPage] = useState(1)
     const limit = 10;
     const { register, handleSubmit, control } = useForm();
-    const dashboardCardData = [
-        { title: "Ready for Rider Assignment", count: 120, icon: <FiBox size={24} />, bgColor: "bg-[#DBEAFE]", textColor: "text-[#155DFC]" },
-        { title: "Rider Assigned", count: 200, icon: <FiBox size={24} />, bgColor: "bg-[#FEF9C2]", textColor: "text-[#D08700]" },
-        { title: "In Transit", count: 80, icon: <FiBox size={24} />, bgColor: "bg-[#F3E8FF]", textColor: "text-[#9810FA]" },
-        { title: "Delivered Today", count: 150, icon: <FiBox size={24} />, bgColor: "bg-[#DCFCE7]", textColor: "text-[#00A63E]" },
-    ]
 
     const { data: parcelsData, isPending } = useQuery({
         queryKey: ['parcelsDashboardData', parcelType, status, paymentStatus, searchTerm, sortBy, sortOrder, page, limit],
@@ -35,6 +29,21 @@ const ManageParcel = () => {
             return res.data.data;
         }
     })
+
+    const { data: dashboardData, isPending: isDashboardPending } = useQuery({
+        queryKey: ['manage-parcel-page-card-data'],
+        queryFn: async () => {
+            const res = await axiosSecure('/parcels/manage-parcel-card-data')
+            return res.data.data;
+        }
+    })
+
+    const dashboardCardData = [
+        { title: "Ready for Rider Assignment", count: dashboardData?.readyForRiderAssignmentCount, icon: <FiBox size={24} />, bgColor: "bg-[#DBEAFE]", textColor: "text-[#155DFC]" },
+        { title: "Rider Assigned", count: dashboardData?.riderAssignedCount, icon: <FiBox size={24} />, bgColor: "bg-[#FEF9C2]", textColor: "text-[#D08700]" },
+        { title: "In Transit", count: dashboardData?.inTransitCount, icon: <FiBox size={24} />, bgColor: "bg-[#F3E8FF]", textColor: "text-[#9810FA]" },
+        { title: "Delivered Today", count: dashboardData?.deliveredTodayCount, icon: <FiBox size={24} />, bgColor: "bg-[#DCFCE7]", textColor: "text-[#00A63E]" },
+    ]
 
     const totalPages = parcelsData ? Math.ceil(parcelsData.meta.total / limit) : 1;
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -74,11 +83,16 @@ const ManageParcel = () => {
     return (
         <div>
             <AdminDashboardHeader heading="Delivery Management" subHeading="Monitor and manage all parcel deliveries" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {
-                    dashboardCardData.map((card, index) => (<DashboardInformationCard key={index} dashboardData={card} />))
-                }
-            </div>
+            {
+                isDashboardPending ?
+                    <p>Loading...</p> :
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {
+                            dashboardCardData.map((card, index) => (<DashboardInformationCard key={index} dashboardData={card} />))
+                        }
+                    </div>
+            }
+
             <form onChange={handleSubmit(handleSearching)} className="px-6 py-4 rounded-xl bg-white border border-[#F3F4F6] shadow-md my-6 flex flex-col md:flex-row items-center gap-4">
                 <Input type="text" {...register("search")} placeholder="Search parcel by sender name, receiver name, parcel name..." className="w-full" />
                 <Controller
@@ -167,7 +181,7 @@ const ManageParcel = () => {
                         <ManageParcelTable data={parcelsData} page={page} setPage={setPage} pageNumbers={pageNumbers} totalPages={totalPages} />
 
             }
-        </div>
+        </div >
     );
 };
 

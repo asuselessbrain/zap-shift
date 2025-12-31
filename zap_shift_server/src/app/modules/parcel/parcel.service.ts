@@ -29,7 +29,7 @@ const getAllParcels = async (query: Record<string, any>) => {
         filter.status = query.status;
     }
 
-    if(query.paymentStatus){
+    if (query.paymentStatus) {
         console.log(query.paymentStatus)
         filter.paymentStatus = query.paymentStatus;
     }
@@ -68,7 +68,27 @@ const getAllParcels = async (query: Record<string, any>) => {
     };
 }
 
+const getManageParcelPageCardData = async (): Promise<{
+    readyForRiderAssignmentCount: number;
+    riderAssignedCount: number;
+    inTransitCount: number;
+    deliveredTodayCount: number;
+}> => {
+    const readyForRiderAssignmentCount = await ParcelModel.countDocuments({ status: "ready-for-rider-assignment" });
+    const riderAssignedCount = await ParcelModel.countDocuments({ status: "rider-assigned" });
+    const inTransitCount = await ParcelModel.countDocuments({ status: "in-transit" });
+    const deliveredTodayCount = await ParcelModel.countDocuments({ status: "delivered", updatedAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } });
+
+    return {
+        readyForRiderAssignmentCount,
+        riderAssignedCount,
+        inTransitCount,
+        deliveredTodayCount
+    }
+}
+
 export const ParcelService = {
     createParcel,
     getAllParcels,
+    getManageParcelPageCardData
 };
