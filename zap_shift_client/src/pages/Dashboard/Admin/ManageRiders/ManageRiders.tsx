@@ -5,10 +5,11 @@ import { Controller, useForm, useWatch, type FieldValues } from "react-hook-form
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLoaderData } from "react-router";
 import type { CoverageArea } from "@/pages/Covarage/Covarage";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useState } from "react";
 import RiderTable from "./RiderTable";
+import NoRiderFound from "./NoRiderFound";
 
 const ManageRiders = () => {
     const { register, handleSubmit, control } = useForm()
@@ -190,7 +191,7 @@ const ManageRiders = () => {
                 isPending ?
                     <p>Loading...</p> :
                     data?.length === 0 ?
-                        <p>No riders found</p> :
+                        <NoRiderFound clearFilters={clearFilters} /> :
                         <RiderTable refetch={refetch} data={data} page={page} setPage={setPage} pageNumbers={pageNumbers} totalPages={totalPages} />
             }
 

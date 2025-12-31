@@ -47,7 +47,7 @@ export interface Parcel {
 
 
 const SendParcel = () => {
-    const { handleSubmit, register, control, formState: { errors } } = useForm();
+    const { handleSubmit, register, reset, control, formState: { errors } } = useForm();
     const axiosSecure = useAxiosSecure();
 
     const regions: CoverageArea[] = useLoaderData();
@@ -68,6 +68,7 @@ const SendParcel = () => {
             return response.data;
         },
         onSuccess: () => {
+            reset();
             toast.success("Parcel created successfully");
         },
         onError: () => {

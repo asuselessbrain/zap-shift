@@ -4,6 +4,7 @@ import { FiEdit, FiUsers } from 'react-icons/fi';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import UpdateUserRoleModal from './UpdateUserRoleModal';
 import type { Dispatch, SetStateAction } from 'react';
+import Pagination from '../../Pagination';
 
 const UserTable = ({refetch, data, page, setPage, pageNumbers, totalPages}: {refetch: () => void, data: Data, page: number, setPage: Dispatch<SetStateAction<number>>, pageNumbers: number[], totalPages: number}) => {
     return (
@@ -88,40 +89,7 @@ const UserTable = ({refetch, data, page, setPage, pageNumbers, totalPages}: {ref
                     </tbody>
                 </table>
             </div>
-            <div className="flex items-center justify-between mt-4">
-                <div className="flex gap-2">
-                    <Button
-                        disabled={page <= 1}
-                        onClick={() => setPage((prev: number) => prev - 1)}
-                        variant="outline"
-                    >
-                        Previous
-                    </Button>
-
-                    {pageNumbers.map((num: number) => (
-                        <Button
-                            key={num}
-                            onClick={() => setPage(num)}
-                            variant={num === page ? "default" : "outline"}
-                            className={num === page ? "bg-primary text-white" : ""}
-                        >
-                            {num}
-                        </Button>
-                    ))}
-
-                    <Button
-                        disabled={page >= totalPages}
-                        onClick={() => setPage((prev: number) => prev + 1)}
-                        variant="outline"
-                    >
-                        Next
-                    </Button>
-                </div>
-
-                <span>
-                    Page {page} of {totalPages}
-                </span>
-            </div>
+            <Pagination page={page} setPage={setPage} pageNumbers={pageNumbers} totalPages={totalPages} />
         </div>
     );
 };

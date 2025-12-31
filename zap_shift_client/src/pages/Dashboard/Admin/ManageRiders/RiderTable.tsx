@@ -1,11 +1,36 @@
 import { Button } from '@/components/ui/button';
-import { FiCheckCircle, FiEdit, FiEye, FiUsers, FiXCircle } from 'react-icons/fi';
+import { FiCheckCircle, FiEye, FiXCircle } from 'react-icons/fi';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import type { Dispatch, SetStateAction } from 'react';
-import type { Data, IUser } from '../ManageUsers/ManageUsers';
 import { useMutation } from '@tanstack/react-query';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
+import Pagination from '../../Pagination';
+
+export interface IRider {
+    _id: string;
+    name: string;
+    age: number;
+    email: string;
+    drivingLicenseNumber: string;
+    region: string;
+    district: string;
+    nid: string;
+    contact: string;
+    bikeBrandModel: string;
+    status: 'pending' | 'approved' | 'rejected';
+    bikeRegistrationNumber: string;
+    aboutBikerYourSelf: string;
+}
+
+export type Data = {
+    data: IRider[];
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+    };
+}
 
 const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: { refetch: () => void, data: Data, page: number, setPage: Dispatch<SetStateAction<number>>, pageNumbers: number[], totalPages: number }) => {
 
@@ -67,7 +92,7 @@ const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: {
                     </thead>
                     <tbody>
                         {
-                            data?.data?.map((user: IUser, index: number) => (<tr key={index} className="bg-neutral-primary border-b border-default">
+                            data?.data?.map((user: IRider, index: number) => (<tr key={index} className="bg-neutral-primary border-b border-default">
                                 <th scope="row" className="px-6 py-4 font-medium text-heading whitespace-nowrap">
                                     {user?.name}
                                 </th>
@@ -118,7 +143,7 @@ const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: {
                     </tbody>
                 </table>
             </div>
-            <div className="flex items-center justify-between mt-4">
+            {/* <div className="flex items-center justify-between mt-4">
                 <div className="flex gap-2">
                     <Button
                         disabled={page <= 1}
@@ -151,7 +176,8 @@ const RiderTable = ({ refetch, data, page, setPage, pageNumbers, totalPages }: {
                 <span>
                     Page {page} of {totalPages}
                 </span>
-            </div>
+            </div> */}
+            <Pagination page={page} setPage={setPage} pageNumbers={pageNumbers} totalPages={totalPages} />
         </div>
     );
 };

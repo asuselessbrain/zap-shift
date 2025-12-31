@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FiUsers } from "react-icons/fi";
 
-const NoUserFound = ({ clearFilters }: { clearFilters: () => void }) => {
+const NoRiderFound = ({ clearFilters }: { clearFilters: () => void }) => {
     return (
         <div className="flex flex-col items-center justify-center text-center py-20 space-y-4 text-gray-600">
             <div className="text-gray-400 text-6xl">
@@ -23,4 +23,4 @@ const NoUserFound = ({ clearFilters }: { clearFilters: () => void }) => {
     );
 };
 
-export default NoUserFound;
+export default NoRiderFound;
